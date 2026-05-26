@@ -146,6 +146,7 @@
 }
 
 .modal-content {
+  position: relative;
   background-color: var(--bg-color);
   width: 100%;
   max-width: 600px;

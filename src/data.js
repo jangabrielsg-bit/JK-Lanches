@@ -1,3 +1,9 @@
+import imgCoxinha from './assets/coxinha.png';
+import imgBolinha from './assets/bolinha.png';
+import imgEnroladinho from './assets/enroladinho.png';
+import imgPastel from './assets/pastel.png';
+import imgPizza from './assets/pizza.png';
+
 export const menuData = [
   // Mini Frituras
   {
@@ -6,7 +12,7 @@ export const menuData = [
     description: "Unidade de mini coxinha.",
     price: 1.00,
     category: "Mini Frituras",
-    image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?q=80&w=500&auto=format&fit=crop", 
+    image: imgCoxinha, 
   },
   {
     id: 2,
@@ -14,7 +20,7 @@ export const menuData = [
     description: "Unidade de mini bolinha de queijo.",
     price: 1.00,
     category: "Mini Frituras",
-    image: "https://images.unsplash.com/photo-1595188448831-299f4931a756?q=80&w=500&auto=format&fit=crop", 
+    image: imgBolinha, 
   },
   {
     id: 3,
@@ -22,7 +28,7 @@ export const menuData = [
     description: "Unidade de mini bolinha mista.",
     price: 1.00,
     category: "Mini Frituras",
-    image: "https://images.unsplash.com/photo-1529042410759-befb1204b468?q=80&w=500&auto=format&fit=crop", 
+    image: imgBolinha, 
   },
   {
     id: 4,
@@ -30,7 +36,7 @@ export const menuData = [
     description: "Unidade de mini enroladinho.",
     price: 1.00,
     category: "Mini Frituras",
-    image: "https://images.unsplash.com/photo-1563514258-b01133a52e1c?q=80&w=500&auto=format&fit=crop", 
+    image: imgEnroladinho, 
   },
 
   // Pastéis
@@ -41,7 +47,7 @@ export const menuData = [
     price: 10.00,
     category: "Pastéis",
     flavors: ["Frango", "Queijo", "Frango c/ Queijo", "Queijo e Calabresa", "Misto"],
-    image: "https://images.unsplash.com/photo-1602881917445-0b1ba001addf?q=80&w=500&auto=format&fit=crop", 
+    image: imgPastel, 
   },
 
   // Pizzas
@@ -53,7 +59,7 @@ export const menuData = [
     category: "Pizzas",
     flavors: ["Queijo", "Mista", "Frango", "Calabresa", "Portuguesa"],
     deliveryDisabled: true,
-    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=500&auto=format&fit=crop", 
+    image: imgPizza, 
   }
 ];
 
