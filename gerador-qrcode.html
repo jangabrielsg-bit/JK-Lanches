@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de QR Code - JK Lanches</title>
+    <script type="text/javascript" src="https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: #1c1311;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .container {
+            background-color: #2b1d19;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 { color: #ffb300; margin-bottom: 10px; }
+        p { color: #ffcdb2; font-size: 0.9rem; margin-bottom: 20px; }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label { display: block; margin-bottom: 8px; font-weight: bold; }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #3d2a25;
+            background-color: rgba(0,0,0,0.2);
+            color: white;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: 0.2s;
+        }
+        button:hover { background-color: #b71c1c; }
+        #canvas {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Criar QR Code</h1>
+        <p>Gere o QR Code oficial da JK Lanches com a sua logo no centro.</p>
+
+        <div class="form-group">
+            <label>Link do Site (Após publicar na internet)</label>
+            <input type="text" id="url" value="https://meu-site-jk-lanches.com.br" placeholder="https://...">
+        </div>
+
+        <div class="form-group">
+            <label>Sua Logo (Opcional)</label>
+            <input type="file" id="logoInput" accept="image/*">
+            <small style="color:#a48c85; display:block; margin-top:5px;">Selecione a imagem da logo que ficará no centro.</small>
+        </div>
+
+        <button id="generateBtn">Gerar e Baixar QR Code</button>
+
+        <div id="canvas"></div>
+    </div>
+
+    <script>
+        const qrCode = new QRCodeStyling({
+            width: 300,
+            height: 300,
+            data: "https://meu-site-jk-lanches.com.br",
+            image: "",
+            dotsOptions: {
+                color: "#1c1311",
+                type: "rounded"
+            },
+            backgroundOptions: {
+                color: "#ffffff",
+            },
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 10
+            },
+            cornersSquareOptions: {
+                color: "#d32f2f",
+                type: "extra-rounded"
+            }
+        });
+
+        qrCode.append(document.getElementById("canvas"));
+
+        document.getElementById('logoInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    qrCode.update({
+                        image: event.target.result
+                    });
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('url').addEventListener('input', function(e) {
+            qrCode.update({
+                data: e.target.value
+            });
+        });
+
+        document.getElementById('generateBtn').addEventListener('click', () => {
+            qrCode.download({ name: "qrcode-jk-lanches", extension: "png" });
+        });
+    </script>
+</body>
+</html>
