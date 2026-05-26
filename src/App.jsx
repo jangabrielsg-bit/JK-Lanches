@@ -17,6 +17,7 @@ function App() {
   const [selectedFlavor, setSelectedFlavor] = useState("");
 
   // Checkout State
+  const [customerName, setCustomerName] = useState("");
   const [deliveryMode, setDeliveryMode] = useState('pickup'); // 'pickup' or 'delivery'
   const [address, setAddress] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("pix");
@@ -63,17 +64,25 @@ function App() {
     setCart(cart.filter(item => item.cartItemId !== cartItemId));
   };
 
+  const updateCartItemFlavor = (cartItemId, newFlavor) => {
+    setCart(cart.map(item => item.cartItemId === cartItemId ? { ...item, flavor: newFlavor } : item));
+  };
+
   const formatCurrency = (val) => {
     return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
   const sendOrder = () => {
+    if (customerName.trim() === '') {
+      alert("Por favor, informe seu nome para o pedido.");
+      return;
+    }
     if (deliveryMode === 'delivery' && address.trim() === '') {
       alert("Por favor, informe o endereço de entrega em Eusébio.");
       return;
     }
 
-    let text = `Olá, gostaria de fazer um pedido na *JK Lanches*:\n\n*Pedido:*\n`;
+    let text = `Olá, sou o/a *${customerName}* e gostaria de fazer um pedido na *JK Lanches*:\n\n*Pedido:*\n`;
     
     cart.forEach(item => {
       text += `${item.quantity}x ${item.product.name} ${item.flavor ? `(Sabor: ${item.flavor})` : ''} - ${formatCurrency(item.product.price * item.quantity)}\n`;
@@ -96,8 +105,7 @@ function App() {
     
     const payMap = {
       'pix': 'PIX',
-      'cash': 'Dinheiro',
-      'card': 'Cartão'
+      'cash': 'Dinheiro'
     };
     
     text += `*Pagamento:* ${payMap[paymentMethod]}\n`;
@@ -242,7 +250,18 @@ function App() {
                           <span style={{ fontWeight: 'bold' }}>{item.quantity}x</span>
                         </div>
                         <div className="cart-item-info" style={{ margin: '0 12px' }}>
-                          <h4 className="cart-item-name">{item.product.name} {item.flavor && <span style={{fontSize:'0.85em', color:'var(--secondary-color)'}}>({item.flavor})</span>}</h4>
+                          <h4 className="cart-item-name" style={{ marginBottom: item.product.flavors ? 0 : 4 }}>{item.product.name}</h4>
+                          {item.product.flavors && (
+                            <select 
+                              value={item.flavor} 
+                              onChange={(e) => updateCartItemFlavor(item.cartItemId, e.target.value)}
+                              style={{ fontSize: '0.85rem', padding: '2px 4px', margin: '4px 0 8px 0', borderRadius: '4px', backgroundColor: 'rgba(0,0,0,0.2)', color: 'var(--text-secondary)', border: '1px solid var(--surface-color-light)', width: '100%' }}
+                            >
+                              {item.product.flavors.map(f => (
+                                <option key={f} value={f}>{f}</option>
+                              ))}
+                            </select>
+                          )}
                           {item.observation && <p className="cart-item-obs">{item.observation}</p>}
                           <span className="cart-item-price">{formatCurrency(item.product.price * item.quantity)}</span>
                         </div>
@@ -254,7 +273,18 @@ function App() {
                   </div>
 
                   <div className="checkout-section">
-                    <h3 className="section-title">Como deseja receber?</h3>
+                    <h3 className="section-title">Seus Dados</h3>
+                    <div className="form-group animation-fadeIn">
+                      <label>Como podemos te chamar?</label>
+                      <input 
+                        type="text" 
+                        placeholder="Digite seu nome"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                      />
+                    </div>
+
+                    <h3 className="section-title" style={{ marginTop: 24 }}>Como deseja receber?</h3>
                     {cart.some(item => item.product.deliveryDisabled) && (
                       <div style={{ background: 'rgba(244, 67, 54, 0.1)', border: '1px solid var(--danger)', padding: 12, borderRadius: 8, marginBottom: 16 }}>
                         <p style={{ color: 'var(--danger)', fontSize: '0.85rem', margin: 0 }}>
@@ -303,7 +333,6 @@ function App() {
                     <div className="form-group">
                       <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
                         <option value="pix">PIX</option>
-                        <option value="card">Cartão (Crédito/Débito)</option>
                         <option value="cash">Dinheiro</option>
                       </select>
                     </div>
